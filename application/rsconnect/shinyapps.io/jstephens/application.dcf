@@ -1,0 +1,11 @@
+name: application
+title:
+username:
+account: jstephens
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5376338
+bundleId: 5415226
+url: https://jstephens.shinyapps.io/application/
+when: 1640718591.25178
+lastSyncTime: 1640718591.25178

@@ -15,7 +15,7 @@ import pandas as pd
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="C:/Users/Administrator/AppData/Local/Google/nsp-name-4c144f293297.json"
 
-def analyze_entity_sentiment(bookname, version,text_content, chapterno,characters):
+def analyze_entity_sentiment(bookname, version,text_content, chapterno,characters,j):
 
     client = language_v1.LanguageServiceClient()
     # Available types: PLAIN_TEXT, HTML
@@ -61,17 +61,17 @@ def analyze_entity_sentiment(bookname, version,text_content, chapterno,character
         #         u"Mention type: {}".format(language_v1.EntityMention.Type(mention.type_).name)
         #    )
         sentiment = entity.sentiment
-        arr = [chapterno, entity.name, language_v1.Entity.Type(entity.type_).name,entity.salience,sentiment.score,sentiment.magnitude]
-        if arr[1] == 'Elizabeth' or arr[1] == 'Charlotte' or arr[1] == 'Charles' or arr[1] == 'Jane' or arr[1] == 'Caroline' or arr[1] == 'Lydia' or arr[1] == 'Fitzwilliam':
-            filepathway = 'input/'+bookname +version+ '_gcloud.csv'
-            f = open(filepathway, "a")
-            writer = csv.writer(f)
-            writer.writerow(arr)
-            f.close()
+        arr = [chapterno, j, len(text_content), entity.name, language_v1.Entity.Type(entity.type_).name,entity.salience,sentiment.score,sentiment.magnitude]
+ #       if arr[1] == 'Elizabeth' or arr[1] == 'Charlotte' or arr[1] == 'Charles' or arr[1] == 'Jane' or arr[1] == 'Caroline' or arr[1] == 'Lydia' or arr[1] == 'Fitzwilliam':
+        filepathway = 'input/'+bookname +version+ '_gcloud3.csv'
+        f = open(filepathway, "a")
+        writer = csv.writer(f)
+        writer.writerow(arr)
+        f.close()
     return 0
 
 bookname='Pride_and_Prejudice'
-version = '_v3_allennlp'
+version = '_v3'
 rawfilepath= 'input/'+bookname + version+ '.txt'
 
 with open(rawfilepath, encoding="cp1252") as f:
@@ -85,16 +85,20 @@ rawcharacterpath = 'input/'+bookname+'_characters.csv'
 characterdf = pd.read_csv(rawcharacterpath,names=['Names'])
 characters = characterdf['Names'].tolist()
 
+
 i= 1
 for x in booktext1:
     x.replace('Chapter','')
     y = x.split('\n')
+    
     if i > 0: 
+        j = 1
         for a in y:
             a.replace('\n','')
             if len(a)> 4:
                 print(a)
-                if 'Elizabeth' in a or 'Fitzwilliam' in a or 'Jane' in a or 'Charlotte' in a or 'Charles' in a or 'Caroline' in a or 'Lydia' in a:
-                    analyze_entity_sentiment(bookname,version,a,i,characters)
+            #   if 'Elizabeth' in a or 'Fitzwilliam' in a or 'Jane' in a or 'Charlotte' in a or 'Charles' in a or 'Caroline' in a or 'Lydia' in a:
+                analyze_entity_sentiment(bookname,version,a,i,characters,j)
+                j = j + 1
     print(i)
     i += 1

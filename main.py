@@ -124,9 +124,9 @@ def create_plot(feature):
         
         for index, character in enumerate(characters):
             if array_dict[f'x_7_{character}'].size == 0:
-                fig.add_trace(go.Violin(x=array_dict[f'x_7_{character}'],name=character,visible=False))
+                fig.add_trace(go.Violin(x=array_dict[f'x_1_{character}'],name=character,visible=False))
             else:
-                fig.add_trace(go.Violin(x=array_dict[f'x_7_{character}'],name=character))
+                fig.add_trace(go.Violin(x=array_dict[f'x_1_{character}'],name=character))
     
         frames = []
         for t in chapter_list:
